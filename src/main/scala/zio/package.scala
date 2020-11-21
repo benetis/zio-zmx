@@ -293,7 +293,7 @@ package object zmx extends MetricsDataModel with MetricsConfigDataModel {
           }
         )
 
-      private[zio] val udp: List[Metric[_]] => IO[Exception, List[Long]] =
+      private[zio] val udp: List[Metric[_]] => Task[List[Long]] =
         metrics => {
           val arr: List[Chunk[Byte]] = sample(metrics)
             .map(Encoder.encode)
@@ -337,8 +337,8 @@ package object zmx extends MetricsDataModel with MetricsConfigDataModel {
 
       val listen: ZIO[Clock, Throwable, Fiber.Runtime[Throwable, Nothing]] = listen(udp)
       def listen(
-        f: List[Metric[_]] => IO[Exception, List[Long]]
-      ): ZIO[Clock, Throwable, Fiber.Runtime[Throwable, Nothing]] =
+        f: List[Metric[_]] => Task[List[Long]]
+      ): ZIO[Clock, Throwable, Fiber.Runtime[Throwable, Nothing]]          =
         collect(f).forever.forkDaemon <& sendIfNotEmpty(f).repeat(everyNSec).forkDaemon
 
       private[zio] val unsafeClient                            = UDPClientUnsafe(config.host.getOrElse("localhost"), config.port.getOrElse(8125))
@@ -456,7 +456,7 @@ package object zmx extends MetricsDataModel with MetricsConfigDataModel {
           override def listen(): ZIO[Clock, Throwable, Fiber.Runtime[Throwable, Nothing]] = unsafe.listen()
 
           override def listen(
-            f: List[Metric[_]] => IO[Exception, List[Long]]
+            f: List[Metric[_]] => Task[List[Long]]
           ): ZIO[Clock, Throwable, Fiber.Runtime[Throwable, Nothing]] = unsafe.listen(f)
         }
     }

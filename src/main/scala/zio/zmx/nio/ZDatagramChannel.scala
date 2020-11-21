@@ -2,7 +2,6 @@ package zio.zmx.nio
 
 import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
-
 import zio.{ Chunk, Task }
 
 class ZDatagramChannel(private val datagramChannel: DatagramChannel) {
@@ -14,4 +13,3 @@ class ZDatagramChannel(private val datagramChannel: DatagramChannel) {
 object ZDatagramChannel {
   def apply(datagramChannel: DatagramChannel): ZDatagramChannel = new ZDatagramChannel(datagramChannel)
 }
-ƒ
