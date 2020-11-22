@@ -1,8 +1,9 @@
 package zio.zmx.metrics
 
+import zio.zmx.JavaNioUtils.ZDatagramChannel
+
 import java.net.InetSocketAddress
 import java.nio.channels.DatagramChannel
-import zio.zmx.nio.ZDatagramChannel
 import zio.{ ZIO, ZManaged }
 
 object UDPClient {

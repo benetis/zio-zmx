@@ -18,7 +18,6 @@ package zio.zmx.diagnostics
 
 import java.nio.charset.StandardCharsets
 import java.nio.charset.StandardCharsets._
-
 import zio.console._
 import zio.nio.channels.SocketChannel
 import zio.nio.core.{ Buffer, ByteBuffer, SocketAddress }
@@ -85,5 +84,4 @@ class ZMXClient(config: ZMXConfig) {
       resp <- SocketChannel.open(addr).use(sendAndReceive)
     } yield resp
   }
-
 }
